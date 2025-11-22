@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TinyLink - URL Shortener
 
-## Getting Started
+## 🚀 Overview
 
-First, run the development server:
+TinyLink is a full-stack URL shortener built using **Next.js**, **Prisma**, and **PostgreSQL (Neon)**. It allows users to create custom short links, manage them via a simple dashboard, and get redirected seamlessly to the original long URLs.
+
+---
+
+## 🧩 Features
+
+* 🔗 Create short URLs from long URLs
+* 🧠 Option to add custom short codes
+* 📋 Dashboard to view all created links
+* ⚡ Fast redirects using server-side routing
+* 🩺 Health check endpoint (`/api/healthz`)
+
+---
+
+## 🛠️ Tech Stack
+
+* **Frontend:** Next.js 16
+* **Backend:** Next.js API Routes
+* **Database:** PostgreSQL (Neon)
+* **ORM:** Prisma
+* **Styling:** CSS / Tailwind CSS
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/<your-username>/tinylink.git
+cd tinylink
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+DATABASE_URL="postgresql://<user>:<password>@<host>/<database>?sslmode=require"
+```
+
+### 4. Setup the Database
+
+```bash
+npx prisma generate
+npx prisma migrate dev --name init
+npx prisma db push
+```
+
+### 5. Run the App
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) 🎉
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧪 API Routes
 
-## Learn More
+| Route               | Method | Description                       |
+| ------------------- | ------ | --------------------------------- |
+| `/api/links`        | GET    | Fetch all links                   |
+| `/api/links`        | POST   | Create a new short link           |
+| `/api/links/[code]` | GET    | Redirect to the original long URL |
+| `/api/healthz`      | GET    | Health check endpoint             |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧠 Folder Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── pages/
+│   ├── index.tsx        # Main dashboard
+│   ├── _app.tsx         # Global CSS import
+│   └── api/
+│       ├── links.ts     # Link creation + fetch
+│       └── healthz.ts   # Health check
+├── styles/
+│   └── index.css        # Styling
+└── lib/
+    └── prisma.ts        # Prisma client setup
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧾 Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Make sure your Neon PostgreSQL database is **active and connected**.
+* If port 3000 is in use, Next.js will automatically switch to 3001.
+
+---
+
+## 👤 Author
+
+**Venkat Rao Velagapudi**
+B.Tech in Computer Science (AI & ML)
+GitHub: [https://github.com/<your-username>](https://github.com/<your-username>)
+
+---
+
+✅ *This project was built as part of the Full Stack Developer Take-Home Assignment for Aganitha Cognitive Solutions.*
