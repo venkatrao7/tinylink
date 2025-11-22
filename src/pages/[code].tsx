@@ -1,24 +1,16 @@
-import { GetServerSideProps } from "next";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+export async function getServerSideProps({ params }: any) {
+  const prisma = new PrismaClient();
+  const code = params.code;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const code = context.params?.code as string;
-
-  const link = await prisma.link.findUnique({ where: { code } });
+  const link = await prisma.link.findUnique({
+    where: { code },
+  });
 
   if (!link) {
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
-
-  // Increment click count (optional)
-  await prisma.link.update({
-    where: { code },
-    data: { clickCount: { increment: 1 }, lastClicked: new Date() },
-  });
 
   return {
     redirect: {
@@ -26,8 +18,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       permanent: false,
     },
   };
-};
+}
 
 export default function RedirectPage() {
-  return <p>Redirecting...</p>;
+  return null;
 }

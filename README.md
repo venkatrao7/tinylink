@@ -93,7 +93,6 @@ src/
 └── lib/
     └── prisma.ts        # Prisma client setup
 ```
-
 ---
 
 ## 🧾 Notes
@@ -105,10 +104,11 @@ src/
 
 ## 👤 Author
 
-**Venkat Rao Velagapudi**
-B.Tech in Computer Science (AI & ML)
-GitHub: [https://github.com/<your-username>](https://github.com/<your-username>)
+**Venkat Rao Velagapudi**  
+B.Tech in Computer Science (AI & ML)  
+GitHub: [https://github.com/venkatrao7](https://github.com/venkatrao7)
 
 ---
 
 ✅ *This project was built as part of the Full Stack Developer Take-Home Assignment for Aganitha Cognitive Solutions.*
+
