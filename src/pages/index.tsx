@@ -66,42 +66,48 @@ export default function Home() {
       {links.length === 0 ? (
         <p>No links yet. Add one using the form above.</p>
       ) : (
-        <ul>
-          {links.map((link) => (
-  <li key={link.code} style={{ marginBottom: "8px" }}>
-    <strong>{link.code}</strong> →{" "}
-    <a href={link.url} target="_blank" rel="noopener noreferrer">
-      {link.url}
-    </a>
-    <button
-      onClick={async () => {
-        const res = await fetch("/api/links", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code: link.code }),
-        });
-        if (res.ok) {
-          fetchLinks(); // refresh list
-        } else {
-          alert("Failed to delete link");
-        }
-      }}
-      style={{
-        marginLeft: "10px",
-        backgroundColor: "red",
-        color: "white",
-        padding: "4px 8px",
-        border: "none",
-        borderRadius: "4px",
-        cursor: "pointer",
-      }}
-    >
-      Delete
-    </button>
-  </li>
-))}
+       <ul>
+  {links.map((link) => (
+    <li key={link.code} style={{ marginBottom: "8px" }}>
+      <strong>
+        <a href={`/code/${link.code}`}>{link.code}</a>
+      </strong>{" "}
+      →{" "}
+      <a href={link.url} target="_blank" rel="noopener noreferrer">
+        {link.url}
+      </a>
+      <button
+        onClick={async () => {
+          const ok = confirm(`Delete link "${link.code}"?`);
+          if (!ok) return;
 
-        </ul>
+          const res = await fetch(`/api/links/${link.code}`, {
+            method: "DELETE",
+          });
+
+          if (res.ok) {
+            fetchLinks(); // refresh list
+          } else {
+            const err = await res.json().catch(() => ({}));
+            alert(err.error || "Failed to delete link");
+          }
+        }}
+        style={{
+          marginLeft: "10px",
+          backgroundColor: "red",
+          color: "white",
+          padding: "4px 8px",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+        }}
+      >
+        Delete
+      </button>
+    </li>
+  ))}
+</ul>
+
       )}
     </main>
   );
