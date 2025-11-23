@@ -3,10 +3,15 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const code = context.params?.code as string;
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const code = params?.code as string;
 
-  // Find link by code
+  if (!code) {
+    return {
+      notFound: true,
+    };
+  }
+
   const link = await prisma.link.findUnique({
     where: { code },
   });
@@ -17,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  // Increment click count and update last clicked
+  // Update analytics: increment clickCount + update lastClicked
   await prisma.link.update({
     where: { code },
     data: {
@@ -28,9 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     redirect: {
-      destination: link.url.startsWith("http")
-        ? link.url
-        : `https://${link.url}`,
+      destination: link.url,
       permanent: false,
     },
   };
