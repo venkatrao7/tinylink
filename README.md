@@ -100,7 +100,20 @@ src/
 * Make sure your Neon PostgreSQL database is **active and connected**.
 * If port 3000 is in use, Next.js will automatically switch to 3001.
 
+
 ---
+
+## 🚀 Deployment
+
+Live Project: [https://tinylink-dww9.vercel.app](https://tinylink-dww9.vercel.app)  
+GitHub Repo: [https://github.com/venkatrao7/tinylink](https://github.com/venkatrao7/tinylink)
+
+## 🧾 Notes
+- Neon PostgreSQL database is active and connected.
+- Port 3000 auto-switches to 3001 if in use.
+- Health check: `/api/healthz` → `{ "ok": true, "version": "1.0" }`.
+- Built for the Aganitha TinyLink assignment.
+
 
 ## 👤 Author
 
