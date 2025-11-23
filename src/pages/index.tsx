@@ -68,13 +68,39 @@ export default function Home() {
       ) : (
         <ul>
           {links.map((link) => (
-            <li key={link.code}>
-              <strong>{link.code}</strong> →{" "}
-              <a href={link.url} target="_blank" rel="noopener noreferrer">
-                {link.url}
-              </a>
-            </li>
-          ))}
+  <li key={link.code} style={{ marginBottom: "8px" }}>
+    <strong>{link.code}</strong> →{" "}
+    <a href={link.url} target="_blank" rel="noopener noreferrer">
+      {link.url}
+    </a>
+    <button
+      onClick={async () => {
+        const res = await fetch("/api/links", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: link.code }),
+        });
+        if (res.ok) {
+          fetchLinks(); // refresh list
+        } else {
+          alert("Failed to delete link");
+        }
+      }}
+      style={{
+        marginLeft: "10px",
+        backgroundColor: "red",
+        color: "white",
+        padding: "4px 8px",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+      }}
+    >
+      Delete
+    </button>
+  </li>
+))}
+
         </ul>
       )}
     </main>
