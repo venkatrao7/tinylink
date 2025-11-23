@@ -1,44 +1,41 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { GetServerSideProps } from "next";
+import { PrismaClient } from "@prisma/client";
 
-export default function RedirectPage() {
-  const router = useRouter();
-  const { code } = router.query;
-  const [error, setError] = useState<string | null>(null);
+const prisma = new PrismaClient();
 
-  useEffect(() => {
-    if (!code) return;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const code = context.params?.code as string;
 
-    const redirect = async () => {
-      try {
-        const res = await fetch(`/api/links?code=${code}`);
-        const data = await res.json();
+  // Find link by code
+  const link = await prisma.link.findUnique({
+    where: { code },
+  });
 
-        if (res.ok && data?.url) {
-          window.location.href = data.url;
-        } else {
-          setError("Short link not found");
-        }
-      } catch (err) {
-        setError("Error fetching link");
-      }
+  if (!link) {
+    return {
+      notFound: true,
     };
-
-    redirect();
-  }, [code]);
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-2xl font-semibold text-red-600 mb-4">404 - Not Found</h1>
-        <p className="text-gray-600">{error}</p>
-      </div>
-    );
   }
 
-  return (
-    <div className="flex items-center justify-center h-screen">
-      <p className="text-lg text-gray-500">Redirecting...</p>
-    </div>
-  );
+  // Increment click count and update last clicked
+  await prisma.link.update({
+    where: { code },
+    data: {
+      clickCount: { increment: 1 },
+      lastClicked: new Date(),
+    },
+  });
+
+  return {
+    redirect: {
+      destination: link.url.startsWith("http")
+        ? link.url
+        : `https://${link.url}`,
+      permanent: false,
+    },
+  };
+};
+
+export default function RedirectPage() {
+  return <p>Redirecting...</p>;
 }
