@@ -16,10 +16,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Check if custom code exists
       if (code) {
-        const existing = await prisma.link.findUnique({ where: { code } });
-        if (existing) {
+        const existing = await prisma.link.findUnique({
+          where: { code },
+        });
+
+        if (existing && existing.url !== url) {
+          // Code exists for another URL — reject
           return res.status(400).json({ error: "Code already exists" });
         }
+
       }
 
       const newLink = await prisma.link.create({
